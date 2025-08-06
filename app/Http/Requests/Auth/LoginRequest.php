@@ -74,6 +74,19 @@ class LoginRequest extends FormRequest
             ]),
         ]);
     }
+    /**
+     * Get the URL to redirect to after a successful login.
+     *
+     * @return string
+     */
+    public function redirectPath(): string
+    {
+        if (Auth::user()->is_admin) {
+            return route('admin.dashboard');
+        }
+
+        return route('dashboard');
+    }
 
     /**
      * Get the rate limiting throttle key for the request.

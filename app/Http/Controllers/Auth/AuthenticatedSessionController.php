@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
-use App\Providers\RouteServiceProvider;
+use App\Providers\RouteServiceProvider; // Keep this if you still use it elsewhere, but it's not needed for the redirect here
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,11 +25,12 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        $request->authenticate(); // This authenticates the user
 
-        $request->session()->regenerate();
+        $request->session()->regenerate(); // Regenerate session ID for security
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        // THIS IS THE KEY CHANGE: Use the dynamic redirectPath from the LoginRequest
+        return redirect()->intended($request->redirectPath());
     }
 
     /**
